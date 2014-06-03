@@ -2,7 +2,7 @@
 module Mongoid
   module Matchers
     class AllowMassAssignmentOfMatcher # :nodoc:
-      attr_reader :failure_message, :negative_failure_message
+      attr_reader :failure_message, :failure_message_when_negated
 
       def initialize(attribute)
         @attribute = attribute.to_s
@@ -21,12 +21,12 @@ module Mongoid
         @klass = klass
         if attr_mass_assignable?
           if whitelisting?
-            @negative_failure_message = "#{@attribute} was made accessible"
+            @failure_message_when_negated = "#{@attribute} was made accessible"
           else
             if protected_attributes.empty?
-              @negative_failure_message = "no attributes were protected"
+              @failure_message_when_negated = "no attributes were protected"
             else
-              @negative_failure_message = "#{class_name} is protecting " <<
+              @failure_message_when_negated = "#{class_name} is protecting " <<
                 "#{protected_attributes.to_a.to_sentence}, " <<
                 "but not #{@attribute}."
             end
